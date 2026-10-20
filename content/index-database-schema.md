@@ -1,28 +1,27 @@
 ## Index Database Schema
-Each file has an SQLite database called `index.db`. This file contains all necessary information for keeping track of:
-* "Who is this node?" (`id`),
-* "How is this node related to other nodes?" (`edge`),
-* "What is this node?" (`node_type`),
-* ...and finally "What **DATA** is in this node?" (`content`).
+Each file has an SQLite database called `graph.sqlite3`. This file contains all necessary information for keeping track of:
+* "Who is this object node?" (`id`),
+* "How is this object node related to other nodes ?" (`edge`),
+* "What is this object?" (`object_type`),
+* ...and finally "What **DATA** is in this object?" (`properties`).
 
 ![Entity relationship diagram of the Index Database Schema](/content/assets/er_diagram_index.png)
 
 ### Database Breakdown
 
-#### node
-A node is a basic unit of information.
-* `id`: The node's identifier. Primary key.
-* `node_type_id`: The foreign key pointing to this node's type.
-* `url`: The node's access point. Can be shared through multiple nodes.
-* `content`: The node's content (JSON). For more details, check [Content and Media Assets](content-and-media-assets.md).
-#### node_type
-Node types define what a node is, its schema and how it should look when rendered.
-* `id`: The node's type identifier. Primary key.
-* `label`: The node's type name. Must be short (hopefully not longer than two words), in snake case, and lowercase. Must be unique.
-* `content_schema`: The node's type content schema (JSON). Nodes must respect their type's content schema when storing `content`.
-* `content_font`: The node's type content font styles (JSON). If not null, keys declared in this field will store those content fields "style".
+#### object_node
+An object.
+* `id`: The object node's identifier. Primary key.
+* `object_type_id`: The foreign key pointing to this object's type.
+* `label`: The object node's name. Multiple objects can have the same name.
+* `properties`: The object's properties (JSON). For more details, check [Properties and Media Assets](properties-and-media-assets.md).
+#### object_type
+Object types define what an object is, its schema and presentation.
+* `id`: The object's type identifier. Primary key.
+* `label`: The object's type name. Must be short (hopefully not longer than two words), in snake case, and lowercase. Must be unique.
+* `schema`: The object's type schema (JSON). Objects must follow their type's properties schema when storing `properties`.
 #### edge
-For more details, check [Node Relationships](#node-relationships).
+For more details, check [Relationships](#relationships).
 * `id`: The edge's identifier. Primary key.
 * `edge_type_id`: The foreign key pointing to this edge's type.
 * `source_node_id`: The foreign key pointing to this edge's source node.
@@ -34,13 +33,7 @@ Edge types describe how nodes relate to each other.
 * `label`: The edge's type name. Must be unique.
     * Must not be too long (hopefully not longer than five words).
     * Must be in snake case and lowercase.
-* `properties_schema`: The edge's type properties schema (JSON). Edges must respect their type's properties schema when storing `properties`.
-* `is_two_way`: Defines if the edge is a two way relationship.
-### Node Relationships
-Nodes can form complex relationships between each other. These relationships are described in the `edge` table. They help organize and form links between units of information, using detailed labels. Exposing the `edge` table enhances the reader's experience when navigating the different nodes.
-
-The following example illustrates how different nodes interact with each other enhancing information storage and consumption experience for users.
-
-![Node relationship diagram example](/content/assets/node_relationship_diagram_example.png)
-
-In this diagram, nodes are represented by circles displaying the node's type, with the URL and ID orbiting each circle denoted as `url(id)`. Nodes relate to one another in distinct ways; for instance, both `mapuche(32)` and `mapudungun(3)` share the same image node `media/mapuche(21)`. This illustration shows just a few of the ways information can be described within this storage system.
+* `directed`: Defines if the edge is directed or undirected.
+* `schema`: The edge's type schema (JSON). Edges must follow their type's properties schema when storing `properties`.
+### Relationships
+Object nodes can form complex relationships between each other. These relationships are described in the `edge` table. They help organize and form links between nodes, using detailed labels and properties. Exposing the `edge` table enhances the reader's experience when navigating the different nodes.

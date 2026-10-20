@@ -1,12 +1,11 @@
-# Knowledge Network Package File Specification
-The Knowledge Network Package File Specification defines a way to store and exchange information nodes for editing, publishing, and consumption of any information article, locally within a simple file.
+# Object Graph Package File Specification
+The Object Graph Package File Specification defines a way to store and exchange objects within a graph for editing, publishing, and consumption, all locally in a single file.
 
 The specification consists of the following parts:
 * [Layout Structure and File Integrity](content/layout-structure-and-file-integrity.md)
 * [Index Database Schema](content/index-database-schema.md)
-* [Content and Media Assets](content/content-and-media-assets.md)
-* [Metadata Schema](content/metadata-schema.md)
+* [Properties and Media Assets](content/properties-and-media-assets.md)
 
 Additionally, this page contains some key starting information needed for understanding the scope of the file format.
 ### Purpose
-A Knowledge Network Package file stores units of knowledge, called "nodes". Nodes contain information (JSON) and can also point to other media assets (images, sounds, videos, etc.) stored within the package. It supports node edges with edge types, and node types, thus enabling developers to define a set of behaviors depending on a node's type.
+An Object Graph Package file stores objects that hold JSON and binary assets (images, sounds, videos, etc.). It also supports types, thus enabling developers to define a set of behaviors depending on an object or edge's type.
